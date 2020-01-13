@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+    <title>Zombie Hunter</title>
+    <head>
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+    </head>
+    <body>
+        <h1 id="score"></h1>
+        <button id="end">End Game</button>
+        <div id="level">
+            <button id="easy">Easy</button>
+            <button id="normal">Normal</button>
+            <button id="hard">Hard</button>
+        </div>
+
+        <img id="zombie" class="position" src="images/zombie-walk.gif">
+        <audio id="scream">
+            <source src="src/scream.mp3">
+        </audio>
+        <script>
+            let score = 0;
+            let x = 0;
+            let id = "zombie";
+            let ids = ["zombie"];
+            let scream = document.getElementById("scream");
+
+            function displayScore(score) {
+                    document.getElementById("score").innerHTML=score;
+            }
+            displayScore(score);   
+
+            function playScream() {
+                scream.play();
+            }
+
+            function showZombie() {
+                document.getElementById("zombie").src="images/zombie-walk.gif";
+                document.getElementById("zombie").style.display="block";
+                document.getElementById("zombie").style.left = (window.innerWidth-199)/2 + "px";
+                document.getElementById("zombie").style.top = (window.innerHeight-226)/2 + "px";
+            }
+
+            function moveZombie(ids) {
+                for (let i=0; i<ids.length; i++) {
+                    let left = Math.floor(Math.random()*(window.innerWidth-199));
+                    let top = Math.floor((Math.random()*((window.innerHeight-226)-140))+140);
+                    document.getElementById(ids[i]).style.left = left+"px";
+                    document.getElementById(ids[i]).style.top = top+"px";
+                }
+            }
+
+            function cleanZombie(id) {
+                document.getElementById(id).style.display="none";
+            }
+
+            function spawn(ids) {
+                let id = "zombie"+x;
+                let body = document.getElementsByTagName('body')[0];
+                let newZombie = document.createElement("img");
+                newZombie.setAttribute("id", id);
+                newZombie.setAttribute("class", "position")
+                document.body.append(newZombie);
+                ids.push(id);
+                document.getElementById(id).src="images/zombie-walk.gif";
+                setClick(id);
+                console.log("spawn");
+                x++
+            }
+
+            function killZombie(id) {
+                playScream();
+                document.getElementById(id).src="images/zombie-die.gif";
+                setTimeout(function(){cleanZombie(id)}, 600);
+                document.getElementById(id).onclick=(function(){return false;})
+                score += 1;
+                displayScore(score)
+            }
+
+            function start() {
+                score = 0;
+                ids = ["zombie"];
+                displayScore(score);
+                showZombie();
+            }
+
+            function setClick(id) {
+                document.getElementById(id).onclick=(function(){killZombie(id)});
+            }
+
+            function reset(ids) {
+                for (let i=0; i<ids.length; i++) {
+                    cleanZombie(ids[i])
+                }
+                start();
+            }
+
+            function setLevel(level) {
+                if (level === "easy") {
+                    setInterval(function(){spawn(ids)}, 4000);
+                    console.log("easy");
+                }
+                if (level === "normal") {
+                    setInterval(function(){spawn(ids)}, 3000);
+                    console.log("normal");
+                }
+                if (level === "hard") {
+                    setInterval(function(){spawn(ids)}, 1500);
+                    console.log("hard");
+                }
+            }
+
+            start();
+            setClick(id);
+            setLevel("normal");
+            setInterval(function(){moveZombie(ids)}, 2000);
+            document.getElementById("end").onclick=(function(){reset(ids)});
+            document.getElementById("easy").onclick=(function(){setLevel("easy")});
+            document.getElementById("normal").onclick=(function(){setLevel("normal")});
+            document.getElementById("hard").onclick=(function(){setLevel("hard")});
+            
+        </script>
+    </body>
+</html>

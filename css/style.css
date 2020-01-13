@@ -1,0 +1,37 @@
+#score {
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 3em;
+    margin-bottom: 10px;
+}
+
+#zombie {
+    position: fixed;
+}
+
+.position {
+    position: absolute;
+}
+
+button {
+    font-size: 1.5em;
+    border: none;
+    background-color: slategray;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 5px 10px;
+}
+
+#end {
+    position: fixed;
+    top: 90%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#level {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
